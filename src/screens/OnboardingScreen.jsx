@@ -40,7 +40,7 @@ export default function OnboardingScreen({ onDone, C, accent, showAmharic }) {
 
   const handleSignup = () => {
     setLoading(true);
-    setTimeout(() => { setLoading(false); onDone(); }, 1400);
+    setTimeout(() => { setLoading(false); onDone({ name: name.trim(), phone: phone.trim() }); }, 1400);
   };
 
   if (step < 3) {

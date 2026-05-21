@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import Icon from '../components/Icon.jsx'
+import { initials, firstName } from '../format.js'
 
-export default function HomeScreen({ onNavigate, C, accent, showAmharic }) {
+export default function HomeScreen({ onNavigate, C, accent, showAmharic, user }) {
   const [balanceVisible, setBalanceVisible] = useState(true);
 
   const txns = [
@@ -29,7 +30,7 @@ export default function HomeScreen({ onNavigate, C, accent, showAmharic }) {
             <Icon name="bell" size={16} color={C.text} />
             <div style={{ position: "absolute", top: 8, right: 9, width: 6, height: 6, borderRadius: "50%", background: accent }} />
           </button>
-          <button onClick={() => onNavigate("profile")} style={{ width: 38, height: 38, borderRadius: "50%", background: C.text, border: "none", cursor: "pointer", color: C.bg, fontSize: 12, fontWeight: 600 }}>AB</button>
+          <button onClick={() => onNavigate("profile")} style={{ width: 38, height: 38, borderRadius: "50%", background: C.text, border: "none", cursor: "pointer", color: C.bg, fontSize: 12, fontWeight: 600 }}>{initials(user.name)}</button>
         </div>
       </div>
 
@@ -39,7 +40,7 @@ export default function HomeScreen({ onNavigate, C, accent, showAmharic }) {
           {showAmharic ? "እንኳን ደህና መጡ" : "Welcome back"}
         </div>
         <div className="serif" style={{ fontSize: 30, color: C.text, lineHeight: 1.05, letterSpacing: "-0.02em" }}>
-          <em style={{ fontStyle: "italic" }}>Hello,</em> Almaz.
+          <em style={{ fontStyle: "italic" }}>Hello,</em> {firstName(user.name)}.
         </div>
       </div>
 

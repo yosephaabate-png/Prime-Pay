@@ -1,6 +1,7 @@
 import Icon from '../components/Icon.jsx'
+import { initials } from '../format.js'
 
-export default function ProfileScreen({ C, accent, showAmharic, onNavigate }) {
+export default function ProfileScreen({ C, accent, showAmharic, onNavigate, user }) {
   const menuItems = [
     { icon: "shield", label: "Security & KYC", am: "ደህንነት", badge: "Verified ✓", badgeColor: C.green },
     { icon: "bell", label: "Notifications", am: "ማሳወቂያዎች", action: "notifications" },
@@ -14,10 +15,10 @@ export default function ProfileScreen({ C, accent, showAmharic, onNavigate }) {
       <div style={{ fontSize: 22, fontWeight: 700, color: C.text, marginBottom: 24 }}>Profile</div>
       {/* Avatar card */}
       <div style={{ background: C.card, border: `1px solid ${C.cardBorder}`, borderRadius: 20, padding: "20px", display: "flex", alignItems: "center", gap: 16, marginBottom: 24 }}>
-        <div style={{ width: 60, height: 60, borderRadius: "50%", background: `${accent}22`, border: `2px solid ${accent}50`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, fontWeight: 700, color: accent }}>AB</div>
+        <div style={{ width: 60, height: 60, borderRadius: "50%", background: `${accent}22`, border: `2px solid ${accent}50`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, fontWeight: 700, color: accent }}>{initials(user.name)}</div>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 18, fontWeight: 700, color: C.text }}>Almaz Bekele</div>
-          <div style={{ fontSize: 13, color: C.textMuted }}>+251 91 234 5678</div>
+          <div style={{ fontSize: 18, fontWeight: 700, color: C.text }}>{user.name}</div>
+          <div style={{ fontSize: 13, color: C.textMuted }}>+251 {user.phone}</div>
           <div style={{ display: "flex", gap: 6, marginTop: 6 }}>
             <div style={{ background: `${C.green}22`, borderRadius: 6, padding: "3px 8px", fontSize: 11, color: C.green, fontWeight: 600 }}>KYC Verified</div>
             <div style={{ background: `${accent}18`, borderRadius: 6, padding: "3px 8px", fontSize: 11, color: accent, fontWeight: 600 }}>Telebirr Linked</div>

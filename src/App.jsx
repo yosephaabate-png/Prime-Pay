@@ -27,6 +27,7 @@ function loadTweaks() {
 export default function App() {
   const [tweaks, setTweaks] = useState(loadTweaks);
   const [screen, setScreen] = useState("onboard");
+  const [user, setUser] = useState({ name: "Almaz Bekele", phone: "912345678" });
 
   const C = getColors(tweaks.theme, tweaks.accentColor);
   const accent = tweaks.accentColor;
@@ -50,19 +51,19 @@ export default function App() {
   const renderScreen = () => {
     switch (screen) {
       case "onboard":
-        return <OnboardingScreen onDone={() => setScreen("home")} C={C} accent={accent} showAmharic={showAmharic} />;
+        return <OnboardingScreen onDone={(profile) => { setUser(profile); setScreen("home"); }} C={C} accent={accent} showAmharic={showAmharic} />;
       case "home":
-        return <HomeScreen onNavigate={navigate} C={C} accent={accent} showAmharic={showAmharic} />;
+        return <HomeScreen onNavigate={navigate} C={C} accent={accent} showAmharic={showAmharic} user={user} />;
       case "invest":
         return <InvestScreen onNavigate={navigate} C={C} accent={accent} showAmharic={showAmharic} />;
       case "send":
-        return <SendScreen onNavigate={navigate} C={C} accent={accent} showAmharic={showAmharic} />;
+        return <SendScreen onNavigate={navigate} C={C} accent={accent} showAmharic={showAmharic} user={user} />;
       case "portfolio":
         return <PortfolioScreen C={C} accent={accent} showAmharic={showAmharic} />;
       case "history":
         return <HistoryScreen C={C} accent={accent} showAmharic={showAmharic} />;
       case "profile":
-        return <ProfileScreen C={C} accent={accent} showAmharic={showAmharic} onNavigate={navigate} />;
+        return <ProfileScreen C={C} accent={accent} showAmharic={showAmharic} onNavigate={navigate} user={user} />;
       case "savings":
         return <SavingsScreen C={C} accent={accent} showAmharic={showAmharic} onBack={() => navigate("home")} />;
       case "notifications":
@@ -70,7 +71,7 @@ export default function App() {
       case "settings":
         return <SettingsScreen C={C} tweaks={tweaks} onChange={updateTweaks} onBack={() => navigate("profile")} />;
       default:
-        return <HomeScreen onNavigate={navigate} C={C} accent={accent} showAmharic={showAmharic} />;
+        return <HomeScreen onNavigate={navigate} C={C} accent={accent} showAmharic={showAmharic} user={user} />;
     }
   };
 

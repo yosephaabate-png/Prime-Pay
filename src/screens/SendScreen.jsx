@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Icon from '../components/Icon.jsx'
 
-export default function SendScreen({ onNavigate, C, accent, showAmharic }) {
+export default function SendScreen({ onNavigate, C, accent, showAmharic, user }) {
   const [sendStep, setSendStep] = useState(0); // 0=method, 1=details, 2=confirm, 3=done
   const [method, setMethod] = useState(null);
   const [amount, setAmount] = useState("");
@@ -176,7 +176,7 @@ export default function SendScreen({ onNavigate, C, accent, showAmharic }) {
           </div>
           <div style={{ margin: "20px 20px", height: 1, background: C.cardBorder }} />
           {[
-            ["From", "Almaz Bekele (Telebirr)"],
+            ["From", `${user.name} (Telebirr)`],
             ["To", recipient],
             ["Fee", "Free via Telebirr"],
             ["Note", note || "—"],
