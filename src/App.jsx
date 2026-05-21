@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { TWEAK_DEFAULTS, getColors } from './theme.js'
 import BottomNav from './components/BottomNav.jsx'
 import OnboardingScreen from './screens/OnboardingScreen.jsx'
@@ -12,8 +12,6 @@ import SavingsScreen from './screens/SavingsScreen.jsx'
 import NotificationsScreen from './screens/NotificationsScreen.jsx'
 import SettingsScreen from './screens/SettingsScreen.jsx'
 
-const DEVICE_W = 402;
-const DEVICE_H = 874;
 const MAIN_SCREENS = ["home", "invest", "send", "portfolio", "history", "profile"];
 const TWEAKS_KEY = "primepay.tweaks";
 
@@ -44,6 +42,11 @@ export default function App() {
     }
   }, [tweaks]);
 
+  // Keep the page background in sync so overscroll never reveals a stray color.
+  useEffect(() => {
+    document.body.style.background = C.bg;
+  }, [C.bg]);
+
   const renderScreen = () => {
     switch (screen) {
       case "onboard":
@@ -73,37 +76,10 @@ export default function App() {
 
   const showNav = MAIN_SCREENS.includes(screen);
 
-  // Scale the device frame to fit the viewport.
-  const scaleRef = useRef(null);
-  useEffect(() => {
-    function rescale() {
-      const scale = Math.min(
-        (window.innerWidth - 40) / DEVICE_W,
-        (window.innerHeight - 40) / DEVICE_H,
-        1
-      );
-      if (scaleRef.current) scaleRef.current.style.transform = `scale(${scale})`;
-    }
-    rescale();
-    window.addEventListener("resize", rescale);
-    return () => window.removeEventListener("resize", rescale);
-  }, []);
-
   return (
-    <div ref={scaleRef} className="device-scaler">
-      <div style={{
-        width: DEVICE_W,
-        height: DEVICE_H,
-        borderRadius: 40,
-        overflow: "hidden",
-        background: C.bg,
-        boxShadow: "0 40px 90px rgba(0,0,0,0.45), 0 0 0 1px rgba(0,0,0,0.25)",
-      }}>
-        <div className="mobile-screen" style={{ background: C.bg }}>
-          {renderScreen()}
-          {showNav && <BottomNav screen={screen} onNavigate={navigate} C={C} accent={accent} showAmharic={showAmharic} />}
-        </div>
-      </div>
+    <div className="mobile-screen" style={{ background: C.bg }}>
+      {renderScreen()}
+      {showNav && <BottomNav screen={screen} onNavigate={navigate} C={C} accent={accent} showAmharic={showAmharic} />}
     </div>
   );
 }
