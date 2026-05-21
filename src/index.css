@@ -1,0 +1,41 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: #0a0d0b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Grotesk', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.device-scaler {
+  transform-origin: center center;
+}
+
+.mobile-screen {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.serif { font-family: 'Instrument Serif', serif; font-weight: 400; letter-spacing: -0.01em; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.tabular { font-variant-numeric: tabular-nums; }
