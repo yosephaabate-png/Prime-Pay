@@ -14,6 +14,7 @@ import SettingsScreen from './screens/SettingsScreen.jsx'
 
 const MAIN_SCREENS = ["home", "invest", "send", "portfolio", "history", "profile"];
 const TWEAKS_KEY = "primepay.tweaks";
+const SESSION_KEY = "primepay.session";
 
 function loadTweaks() {
   try {
@@ -24,16 +25,44 @@ function loadTweaks() {
   }
 }
 
+function loadSession() {
+  try {
+    const saved = localStorage.getItem(SESSION_KEY);
+    return saved ? JSON.parse(saved) : null;
+  } catch {
+    return null;
+  }
+}
+
 export default function App() {
   const [tweaks, setTweaks] = useState(loadTweaks);
-  const [screen, setScreen] = useState("onboard");
-  const [user, setUser] = useState({ name: "Almaz Bekele", phone: "912345678" });
+  const [screen, setScreen] = useState(() => (loadSession() ? "home" : "onboard"));
+  const [user, setUser] = useState(() => loadSession() || { name: "Almaz Bekele", phone: "912345678" });
 
   const C = getColors(tweaks.theme, tweaks.accentColor);
   const accent = tweaks.accentColor;
   const showAmharic = tweaks.showAmharic;
   const navigate = (s) => setScreen(s);
   const updateTweaks = (patch) => setTweaks(t => ({ ...t, ...patch }));
+
+  const signIn = (profile) => {
+    setUser(profile);
+    try {
+      localStorage.setItem(SESSION_KEY, JSON.stringify(profile));
+    } catch {
+      // localStorage unavailable — session stays in-memory only
+    }
+    setScreen("home");
+  };
+
+  const signOut = () => {
+    try {
+      localStorage.removeItem(SESSION_KEY);
+    } catch {
+      // localStorage unavailable — nothing to clear
+    }
+    setScreen("onboard");
+  };
 
   useEffect(() => {
     try {
@@ -51,7 +80,7 @@ export default function App() {
   const renderScreen = () => {
     switch (screen) {
       case "onboard":
-        return <OnboardingScreen onDone={(profile) => { setUser(profile); setScreen("home"); }} C={C} accent={accent} showAmharic={showAmharic} />;
+        return <OnboardingScreen onDone={signIn} C={C} accent={accent} showAmharic={showAmharic} />;
       case "home":
         return <HomeScreen onNavigate={navigate} C={C} accent={accent} showAmharic={showAmharic} user={user} />;
       case "invest":
@@ -63,7 +92,7 @@ export default function App() {
       case "history":
         return <HistoryScreen C={C} accent={accent} showAmharic={showAmharic} />;
       case "profile":
-        return <ProfileScreen C={C} accent={accent} showAmharic={showAmharic} onNavigate={navigate} user={user} />;
+        return <ProfileScreen C={C} accent={accent} showAmharic={showAmharic} onNavigate={navigate} onSignOut={signOut} user={user} />;
       case "savings":
         return <SavingsScreen C={C} accent={accent} showAmharic={showAmharic} onBack={() => navigate("home")} />;
       case "notifications":

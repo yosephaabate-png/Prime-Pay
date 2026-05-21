@@ -1,14 +1,14 @@
 import Icon from '../components/Icon.jsx'
 import { initials } from '../format.js'
 
-export default function ProfileScreen({ C, accent, showAmharic, onNavigate, user }) {
+export default function ProfileScreen({ C, accent, showAmharic, onNavigate, onSignOut, user }) {
   const menuItems = [
     { icon: "shield", label: "Security & KYC", am: "ደህንነት", badge: "Verified ✓", badgeColor: C.green },
     { icon: "bell", label: "Notifications", am: "ማሳወቂያዎች", action: "notifications" },
     { icon: "lock", label: "Change PIN", am: "ፒን ቀይር" },
     { icon: "help", label: "Help & Support", am: "እርዳታ" },
     { icon: "settings", label: "Settings", am: "ቅንብሮች", action: "settings" },
-    { icon: "logout", label: "Sign Out", am: "ውጣ", danger: true, action: "onboard" },
+    { icon: "logout", label: "Sign Out", am: "ውጣ", danger: true, signOut: true },
   ];
   return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column", background: C.bg, padding: "24px 24px 80px", overflowY: "auto" }}>
@@ -28,7 +28,7 @@ export default function ProfileScreen({ C, accent, showAmharic, onNavigate, user
 
       <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {menuItems.map(item => (
-          <button key={item.label} onClick={() => item.action && onNavigate(item.action)} style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 14px", background: "none", border: "none", cursor: item.action ? "pointer" : "default", borderRadius: 14, textAlign: "left" }}>
+          <button key={item.label} onClick={() => { if (item.signOut) onSignOut(); else if (item.action) onNavigate(item.action); }} style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 14px", background: "none", border: "none", cursor: (item.action || item.signOut) ? "pointer" : "default", borderRadius: 14, textAlign: "left" }}>
             <div style={{ width: 38, height: 38, borderRadius: 10, background: item.danger ? `${C.red}18` : C.surface, display: "flex", alignItems: "center", justifyContent: "center" }}>
               <Icon name={item.icon} size={18} color={item.danger ? C.red : C.textMuted} />
             </div>
